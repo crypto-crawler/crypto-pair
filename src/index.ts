@@ -187,7 +187,8 @@ export default function normalize(rawPair: string, exchange?: string): string {
       if (baseSymbol === 'KEY') baseSymbol = 'MYKEY';
       return `${baseSymbol}_${arr[2]}`;
     }
-    case 'Poloniex': {
+    case 'Poloniex':
+    case 'Upbit': {
       [quoteSymbol, baseSymbol] = rawPair.split('_');
       break;
     }
