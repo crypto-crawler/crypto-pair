@@ -11,8 +11,8 @@ npx crypto-pair ADABUSD --exchange Binance
 ## How to use
 
 ```javascript
-/* eslint-disable import/no-unresolved,no-console */
-const normalize = require('eos-token-info').default;
+/* eslint-disable import/no-unresolved,no-console,import/no-extraneous-dependencies */
+const normalize = require('crypto-pair').default;
 
 console.info(normalize('ADABUSD', 'Binance'));
 ```

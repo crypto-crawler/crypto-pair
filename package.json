@@ -11,8 +11,8 @@
     "start": "node ./dist/index.js",
     "lint": "eslint . --ext '.js,.jsx,.ts,.tsx,.md'",
     "prettier": "prettier -c --write '**/*'",
-    "prepublish": "npm run lint && npm run prettier && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "npm run lint && npm run prettier && npm run test && npm run build",
+    "test": "jest --config jest.config.json --no-cache"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/soulmachine/crypto-pair",
   "devDependencies": {
+    "@types/jest": "^25.1.0",
     "@types/node": "^13.5.0",
     "@types/yargs": "^15.0.2",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
@@ -44,7 +45,11 @@
     "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-markdown": "^1.0.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "exchange-info": "^1.5.4",
+    "jest": "^25.1.0",
+    "jest-each": "^25.1.0",
     "prettier": "^1.19.1",
+    "ts-jest": "^25.0.0",
     "typescript": "^3.7.5"
   },
   "dependencies": {
