@@ -198,7 +198,7 @@ export default function normalize(rawPair: string, exchange: string): string {
         throw new Error(`Failed to parse Kraken raw pair ${rawPair}`);
       }
 
-      return `${baseSymbol}_${quoteSymbol}`;
+      break;
     }
     case 'Newdex': {
       const arr = rawPair.toUpperCase().split('-');
@@ -217,12 +217,17 @@ export default function normalize(rawPair: string, exchange: string): string {
       return `${baseSymbol}_${quoteSymbol}`;
     }
     default: {
-      const normalizedPair = defaultNormalize(rawPair);
-      if (normalizedPair === undefined) {
-        throw new Error(`Failed to parse ${rawPair} of exchange ${exchange}`);
-      } else {
-        [baseSymbol, quoteSymbol] = normalizedPair.split('_');
-      }
+      // see next line
+    }
+  }
+
+  // default
+  if (!baseSymbol || !quoteSymbol) {
+    const normalizedPair = defaultNormalize(rawPair);
+    if (normalizedPair === undefined) {
+      throw new Error(`Failed to parse ${rawPair} of exchange ${exchange}`);
+    } else {
+      [baseSymbol, quoteSymbol] = normalizedPair.split('_');
     }
   }
 
@@ -238,6 +243,14 @@ export default function normalize(rawPair: string, exchange: string): string {
     }
     case 'Huobi': {
       if (baseSymbol === 'HOT') baseSymbol = 'HYDRO';
+      break;
+    }
+    case 'Kraken': {
+      if (baseSymbol === 'XBT') baseSymbol = 'BTC';
+      if (baseSymbol === 'XDG') baseSymbol = 'DOGE';
+
+      if (quoteSymbol === 'XBT') quoteSymbol = 'BTC';
+
       break;
     }
     case 'Newdex':
