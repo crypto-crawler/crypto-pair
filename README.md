@@ -1,6 +1,6 @@
 # crypto-pair
 
-Normalize cryptocurrency pairs.
+Normalize cryptocurrency trade pairs.
 
 ## Quick start
 
@@ -23,10 +23,10 @@ There is only one API in this library:
 
 ```typescript
 /**
- * Normalize a cryptocurrency pair.
+ * Normalize a cryptocurrency trade pair.
  *
  * @param rawPair The original pair of an exchange
  * @param exchange The exchange name
  */
-export default function normalize(rawPair: string, exchange?: string): string;
+export default function normalize(rawPair: string, exchange: string): string;
 ```

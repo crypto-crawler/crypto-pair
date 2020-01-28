@@ -82,25 +82,17 @@ function defaultNormalize(rawPair: string): string | undefined {
 }
 
 /**
- * Normalize a cryptocurrency pair.
+ * Normalize a cryptocurrency trade pair.
  *
  * @param rawPair The original pair of an exchange
  * @param exchange The exchange name
  */
-export default function normalize(rawPair: string, exchange?: string): string {
+export default function normalize(rawPair: string, exchange: string): string {
+  assert.ok(exchange, 'The exchange name must NOT be empty');
   rawPair = rawPair.toUpperCase(); // eslint-disable-line no-param-reassign
-  const normalizedPair = defaultNormalize(rawPair);
-
-  if (!exchange) {
-    if (!normalizedPair) throw new Error(`Failed to parse ${rawPair}`);
-    else return normalizedPair;
-  }
 
   let baseSymbol = '';
   let quoteSymbol = '';
-  if (normalizedPair) {
-    [baseSymbol, quoteSymbol] = normalizedPair!.split('_');
-  }
 
   switch (exchange) {
     case 'Bitfinex': {
@@ -160,48 +152,101 @@ export default function normalize(rawPair: string, exchange?: string): string {
       if (baseSymbol in mapping) baseSymbol = mapping[baseSymbol];
       if (quoteSymbol in mapping) quoteSymbol = mapping[quoteSymbol];
 
+      break;
+    }
+    case 'Kraken': {
+      const QUOTE_SYMBOLS = [
+        'BTC',
+        'ETH',
+        'EUR',
+        'USD',
+        'CAD',
+        'CHF',
+        'DAI',
+        'GBP',
+        'JPY',
+        'USDC',
+        'USDT',
+      ];
+
+      const safeCurrencyCode = (currencyId: string): string => {
+        let result = currencyId;
+        if (currencyId.length > 3) {
+          if (currencyId.indexOf('X') === 0 || currencyId.indexOf('Z') === 0) {
+            result = currencyId.slice(1);
+          }
+        }
+
+        if (result === 'XBT') result = 'BTC';
+        if (result === 'XDG') result = 'DOGE';
+
+        return result;
+      };
+
+      // eslint-disable-next-line no-shadow
+      baseSymbol = safeCurrencyCode(rawPair.slice(0, rawPair.length - 4));
+      quoteSymbol = safeCurrencyCode(rawPair.slice(rawPair.length - 4));
+      // handle ICXETH
+      if (
+        !QUOTE_SYMBOLS.includes(quoteSymbol) ||
+        (baseSymbol.length === 2 && baseSymbol !== 'SC')
+      ) {
+        baseSymbol = safeCurrencyCode(rawPair.slice(0, rawPair.length - 3));
+        quoteSymbol = safeCurrencyCode(rawPair.slice(rawPair.length - 3));
+      }
+      if (!QUOTE_SYMBOLS.includes(quoteSymbol)) {
+        throw new Error(`Failed to parse Kraken raw pair ${rawPair}`);
+      }
+
+      return `${baseSymbol}_${quoteSymbol}`;
+    }
+    case 'Newdex': {
+      const arr = rawPair.toUpperCase().split('-');
+      assert.equal(arr.length, 3, `Failed to parse ${rawPair} for Newdex`);
+
+      [, baseSymbol, quoteSymbol] = arr;
+
+      break;
+    }
+    case 'Poloniex': {
+      [quoteSymbol, baseSymbol] = rawPair.split('_');
+      return `${baseSymbol}_${quoteSymbol}`;
+    }
+    case 'Upbit': {
+      [quoteSymbol, baseSymbol] = rawPair.split('-');
+      return `${baseSymbol}_${quoteSymbol}`;
+    }
+    default: {
+      const normalizedPair = defaultNormalize(rawPair);
+      if (normalizedPair === undefined) {
+        throw new Error(`Failed to parse ${rawPair} of exchange ${exchange}`);
+      } else {
+        [baseSymbol, quoteSymbol] = normalizedPair.split('_');
+      }
+    }
+  }
+
+  assert.ok(baseSymbol);
+  assert.ok(quoteSymbol);
+
+  // rename
+  switch (exchange) {
+    case 'Bitfinex': {
       if (baseSymbol === 'HOT') baseSymbol = 'HYDRO';
       if (baseSymbol === 'ORS') baseSymbol = 'ORSGROUP';
-
       break;
     }
     case 'Huobi': {
       if (baseSymbol === 'HOT') baseSymbol = 'HYDRO';
       break;
     }
-    case 'Kraken': {
-      if (baseSymbol === 'XBT') baseSymbol = 'BTC';
-      if (baseSymbol === 'XDG') baseSymbol = 'DOGE';
-
-      if (quoteSymbol === 'XBT') quoteSymbol = 'BTC';
-      if (quoteSymbol === 'XDG') quoteSymbol = 'DOGE';
-
-      break;
-    }
-    case 'Newdex': {
-      const arr = rawPair.toUpperCase().split('-');
-      assert.equal(arr.length, 3, `Failed to parse ${rawPair} for Newdex`);
-
-      [, baseSymbol] = arr;
-
-      if (baseSymbol === 'KEY') baseSymbol = 'MYKEY';
-      return `${baseSymbol}_${arr[2]}`;
-    }
-    case 'Poloniex': {
-      [quoteSymbol, baseSymbol] = rawPair.split('_');
-      break;
-    }
-    case 'Upbit': {
-      [quoteSymbol, baseSymbol] = rawPair.split('-');
-      break;
-    }
+    case 'Newdex':
     case 'WhaleEx': {
       if (baseSymbol === 'KEY') baseSymbol = 'MYKEY';
       break;
     }
     default:
-      if (normalizedPair) return normalizedPair;
-      throw new Error(`Failed to parse ${rawPair} for exchange ${exchange}`);
+    // do nothing, no change to baseSymbol or quoteSymbol
   }
 
   return `${baseSymbol}_${quoteSymbol}`;
