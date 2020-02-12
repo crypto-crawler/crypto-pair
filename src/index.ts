@@ -154,6 +154,14 @@ export default function normalize(rawPair: string, exchange: string): string {
 
       break;
     }
+    case 'Bitstamp': {
+      if (!rawPair.includes('/') && !rawPair.includes('_')) {
+        baseSymbol = rawPair.substring(0, 3);
+        quoteSymbol = rawPair.substring(3);
+      }
+
+      break;
+    }
     case 'Kraken': {
       const QUOTE_SYMBOLS = [
         'BTC',
