@@ -50,6 +50,7 @@ const ALL_LENGTHS = [5, 4, 3, 2];
  */
 export function normalizeSymbol(symbol: string, exchange: string): string {
   assert.ok(exchange, 'The exchange name must NOT be empty');
+  symbol = symbol.toUpperCase();
 
   switch (exchange) {
     case 'Bitfinex': {
