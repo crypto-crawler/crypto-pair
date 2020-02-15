@@ -42,6 +42,12 @@ const ALL_QUOTE_SYMBOLS = [
 
 const ALL_LENGTHS = [5, 4, 3, 2];
 
+/**
+ * Normalize a symbol.
+ *
+ * @param symbol The original symbol from an exchange
+ * @param exchange The normalized symbol
+ */
 export function normalizeSymbol(symbol: string, exchange: string): string {
   assert.ok(exchange, 'The exchange name must NOT be empty');
 
@@ -126,7 +132,7 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
 }
 
 // undefined means parse failure
-function defaultNormalize(rawPair: string): string | undefined {
+function defaultNormalizePair(rawPair: string): string | undefined {
   rawPair = rawPair.toUpperCase();
 
   if (rawPair.includes('_')) {
@@ -170,7 +176,7 @@ function defaultNormalize(rawPair: string): string | undefined {
  * @param rawPair The original pair of an exchange
  * @param exchange The exchange name
  */
-export default function normalize(rawPair: string, exchange: string): string {
+export function normalizePair(rawPair: string, exchange: string): string {
   assert.ok(exchange, 'The exchange name must NOT be empty');
   rawPair = rawPair.toUpperCase();
 
@@ -266,7 +272,7 @@ export default function normalize(rawPair: string, exchange: string): string {
 
   // default
   if (!baseSymbol || !quoteSymbol) {
-    const normalizedPair = defaultNormalize(rawPair);
+    const normalizedPair = defaultNormalizePair(rawPair);
     if (normalizedPair === undefined) {
       throw new Error(`Failed to parse ${rawPair} of exchange ${exchange}`);
     } else {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
-import normalize from './index';
+import { normalizePair } from './index';
 
 const EXCHANGES = [
   'Biki',
@@ -39,4 +39,4 @@ const { argv } = yargs
       });
   });
 
-console.info(normalize(argv.raw_pair as string, argv.exchange as string));
+console.info(normalizePair(argv.raw_pair as string, argv.exchange as string));

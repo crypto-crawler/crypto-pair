@@ -1,6 +1,6 @@
 import fs from 'fs';
 import each from 'jest-each';
-import normalize from '../src/index';
+import { normalizePair } from '../src/index';
 
 const SUPPORTED_EXCHANGES = [
   'Binance',
@@ -24,6 +24,6 @@ each(SUPPORTED_EXCHANGES).test('normalize() should return the same result', (exc
 
   Object.keys(mapping).forEach(pair => {
     const rawPair = mapping[pair];
-    expect(normalize(rawPair, exchange)).toBe(pair); // eslint-disable-line jest/no-standalone-expect
+    expect(normalizePair(rawPair, exchange)).toBe(pair); // eslint-disable-line jest/no-standalone-expect
   });
 });
