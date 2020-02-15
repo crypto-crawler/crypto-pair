@@ -24,6 +24,7 @@ const eslintrc = {
   ],
   rules: {
     'no-console': 'off',
+    'no-param-reassign': 'off',
     'import/extensions': 'off',
   },
 };

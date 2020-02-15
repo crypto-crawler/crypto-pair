@@ -42,57 +42,8 @@ const ALL_QUOTE_SYMBOLS = [
 
 const ALL_LENGTHS = [5, 4, 3, 2];
 
-// undefined means parse failure
-function defaultNormalize(rawPair: string): string | undefined {
-  rawPair = rawPair.toUpperCase(); // eslint-disable-line no-param-reassign
-
-  if (rawPair.includes('_')) {
-    if (rawPair.split('_').length !== 2) return undefined;
-    return rawPair;
-  }
-  if (rawPair.includes('-')) {
-    if (rawPair.split('-').length !== 2) return undefined;
-    return rawPair.replace(/-/g, '_');
-  }
-  if (rawPair.includes(':')) {
-    if (rawPair.split(':').length !== 2) return undefined;
-    return rawPair.replace(/:/g, '_');
-  }
-  if (rawPair.includes('/')) {
-    if (rawPair.split('/').length !== 2) return undefined;
-    return rawPair.replace(/\//g, '_');
-  }
-
-  let quoteSymbol: string | undefined;
-
-  for (let i = 0; i < ALL_LENGTHS.length; i += 1) {
-    const length = ALL_LENGTHS[i];
-    quoteSymbol = rawPair.slice(rawPair.length - length);
-    if (ALL_QUOTE_SYMBOLS.includes(quoteSymbol)) {
-      break;
-    } else {
-      quoteSymbol = undefined;
-    }
-  }
-  if (!quoteSymbol) return undefined;
-
-  const baseSymbol = rawPair.slice(0, rawPair.length - quoteSymbol.length);
-
-  return `${baseSymbol}_${quoteSymbol}`;
-}
-
-/**
- * Normalize a cryptocurrency trade pair.
- *
- * @param rawPair The original pair of an exchange
- * @param exchange The exchange name
- */
-export default function normalize(rawPair: string, exchange: string): string {
+export function normalizeSymbol(symbol: string, exchange: string): string {
   assert.ok(exchange, 'The exchange name must NOT be empty');
-  rawPair = rawPair.toUpperCase(); // eslint-disable-line no-param-reassign
-
-  let baseSymbol = '';
-  let quoteSymbol = '';
 
   switch (exchange) {
     case 'Bitfinex': {
@@ -142,15 +93,98 @@ export default function normalize(rawPair: string, exchange: string): string {
         YYW: 'YOYOW',
       };
 
+      if (symbol in mapping) symbol = mapping[symbol];
+
+      if (symbol === 'HOT') symbol = 'HYDRO';
+      if (symbol === 'ORS') symbol = 'ORSGROUP';
+      break;
+    }
+    case 'Huobi': {
+      if (symbol === 'HOT') symbol = 'HYDRO';
+      break;
+    }
+    case 'Kraken': {
+      // https://support.kraken.com/hc/en-us/articles/360001185506-How-to-interpret-asset-codes
+      if (symbol.length > 3 && (symbol.indexOf('X') === 0 || symbol.indexOf('Z') === 0)) {
+        symbol = symbol.slice(1);
+      }
+      if (symbol === 'XBT') symbol = 'BTC';
+      if (symbol === 'XDG') symbol = 'DOGE';
+
+      break;
+    }
+    case 'Newdex':
+    case 'WhaleEx': {
+      if (symbol === 'KEY') symbol = 'MYKEY';
+      break;
+    }
+    default:
+    // do nothing, no change to baseSymbol or quoteSymbol
+  }
+
+  return symbol;
+}
+
+// undefined means parse failure
+function defaultNormalize(rawPair: string): string | undefined {
+  rawPair = rawPair.toUpperCase();
+
+  if (rawPair.includes('_')) {
+    if (rawPair.split('_').length !== 2) return undefined;
+    return rawPair;
+  }
+  if (rawPair.includes('-')) {
+    if (rawPair.split('-').length !== 2) return undefined;
+    return rawPair.replace(/-/g, '_');
+  }
+  if (rawPair.includes(':')) {
+    if (rawPair.split(':').length !== 2) return undefined;
+    return rawPair.replace(/:/g, '_');
+  }
+  if (rawPair.includes('/')) {
+    if (rawPair.split('/').length !== 2) return undefined;
+    return rawPair.replace(/\//g, '_');
+  }
+
+  let quoteSymbol: string | undefined;
+
+  for (let i = 0; i < ALL_LENGTHS.length; i += 1) {
+    const length = ALL_LENGTHS[i];
+    quoteSymbol = rawPair.slice(rawPair.length - length);
+    if (ALL_QUOTE_SYMBOLS.includes(quoteSymbol)) {
+      break;
+    } else {
+      quoteSymbol = undefined;
+    }
+  }
+  if (!quoteSymbol) return undefined;
+
+  const baseSymbol = rawPair.slice(0, rawPair.length - quoteSymbol.length);
+
+  return `${baseSymbol}_${quoteSymbol}`;
+}
+
+/**
+ * Normalize a cryptocurrency trade pair.
+ *
+ * @param rawPair The original pair of an exchange
+ * @param exchange The exchange name
+ */
+export default function normalize(rawPair: string, exchange: string): string {
+  assert.ok(exchange, 'The exchange name must NOT be empty');
+  rawPair = rawPair.toUpperCase();
+
+  let baseSymbol = '';
+  let quoteSymbol = '';
+
+  switch (exchange) {
+    case 'Bitfinex': {
       if (rawPair.includes(':')) {
         [baseSymbol, quoteSymbol] = rawPair.split(':');
       } else {
         baseSymbol = rawPair.slice(0, rawPair.length - 3);
         quoteSymbol = rawPair.slice(rawPair.length - 3);
       }
-
-      if (baseSymbol in mapping) baseSymbol = mapping[baseSymbol];
-      if (quoteSymbol in mapping) quoteSymbol = mapping[quoteSymbol];
 
       break;
     }
@@ -177,6 +211,7 @@ export default function normalize(rawPair: string, exchange: string): string {
         'USDT',
       ];
 
+      // https://github.com/ccxt/ccxt/blob/master/js/kraken.js#L322
       const safeCurrencyCode = (currencyId: string): string => {
         let result = currencyId;
         if (currencyId.length > 3) {
@@ -242,33 +277,8 @@ export default function normalize(rawPair: string, exchange: string): string {
   assert.ok(baseSymbol);
   assert.ok(quoteSymbol);
 
-  // rename
-  switch (exchange) {
-    case 'Bitfinex': {
-      if (baseSymbol === 'HOT') baseSymbol = 'HYDRO';
-      if (baseSymbol === 'ORS') baseSymbol = 'ORSGROUP';
-      break;
-    }
-    case 'Huobi': {
-      if (baseSymbol === 'HOT') baseSymbol = 'HYDRO';
-      break;
-    }
-    case 'Kraken': {
-      if (baseSymbol === 'XBT') baseSymbol = 'BTC';
-      if (baseSymbol === 'XDG') baseSymbol = 'DOGE';
-
-      if (quoteSymbol === 'XBT') quoteSymbol = 'BTC';
-
-      break;
-    }
-    case 'Newdex':
-    case 'WhaleEx': {
-      if (baseSymbol === 'KEY') baseSymbol = 'MYKEY';
-      break;
-    }
-    default:
-    // do nothing, no change to baseSymbol or quoteSymbol
-  }
+  baseSymbol = normalizeSymbol(baseSymbol, exchange);
+  quoteSymbol = normalizeSymbol(quoteSymbol, exchange);
 
   return `${baseSymbol}_${quoteSymbol}`;
 }

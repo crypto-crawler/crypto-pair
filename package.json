@@ -1,6 +1,6 @@
 {
   "name": "crypto-pair",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Normalize cryptocurrency trade pairs.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -50,7 +50,7 @@
     "eslint-plugin-jest": "^23.7.0",
     "eslint-plugin-markdown": "^1.0.1",
     "eslint-plugin-prettier": "^3.1.2",
-    "exchange-info": "^1.5.8",
+    "exchange-info": "^1.5.9",
     "jest": "^25.1.0",
     "jest-each": "^25.1.0",
     "prettier": "^1.19.1",
