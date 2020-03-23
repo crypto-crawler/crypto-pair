@@ -24,7 +24,7 @@ const EXCHANGES = [
 
 const { argv } = yargs
   // eslint-disable-next-line no-shadow
-  .command('$0 <raw_pair> [exchange]', 'Normalize a pair', yargs => {
+  .command('$0 <raw_pair> [exchange]', 'Normalize a pair', (yargs) => {
     yargs
       .positional('raw_pair', {
         type: 'string',

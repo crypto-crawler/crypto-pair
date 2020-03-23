@@ -22,7 +22,7 @@ const pairsMapping = JSON.parse(fs.readFileSync('./tests/data/pairs_mapping.json
 each(SUPPORTED_EXCHANGES).test('normalize() should return the same result', (exchange: string) => {
   const mapping = pairsMapping[exchange];
 
-  Object.keys(mapping).forEach(pair => {
+  Object.keys(mapping).forEach((pair) => {
     const rawPair = mapping[pair];
     expect(normalizePair(rawPair, exchange)).toBe(pair); // eslint-disable-line jest/no-standalone-expect
   });
