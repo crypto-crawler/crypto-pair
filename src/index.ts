@@ -100,6 +100,8 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
         YYW: 'YOYOW',
       };
 
+      if (symbol.endsWith('F0')) symbol = symbol.substring(0, symbol.length - 2); // Futures only
+
       if (symbol in mapping) symbol = mapping[symbol];
 
       if (symbol === 'HOT') symbol = 'HYDRO';
