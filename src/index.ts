@@ -254,9 +254,14 @@ export function normalizePair(rawPair: string, exchange: string): string {
     }
     case 'Newdex': {
       const arr = rawPair.toUpperCase().split('-');
-      assert.equal(arr.length, 3, `Failed to parse ${rawPair} for Newdex`);
 
-      [, baseSymbol, quoteSymbol] = arr;
+      if (arr.length === 3) {
+        [, baseSymbol, quoteSymbol] = arr;
+      } else if (arr.length === 2) {
+        [baseSymbol, quoteSymbol] = arr;
+      } else {
+        throw new Error(`Failed to parse ${rawPair} for Newdex`);
+      }
 
       break;
     }
