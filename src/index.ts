@@ -37,6 +37,7 @@ const ALL_QUOTE_SYMBOLS = [
   'XCHF',
   'XLM',
   'XRP',
+  'ZAR',
   'ZIG',
 ];
 
