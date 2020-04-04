@@ -1049,7 +1049,7 @@
     "XRP_EUR": "XRP/EUR",
     "XRP_USD": "XRP/USD"
   },
-  "Coinbase": {
+  "CoinbasePro": {
     "ALGO_USD": "ALGO-USD",
     "ATOM_BTC": "ATOM-BTC",
     "ATOM_USD": "ATOM-USD",
@@ -2176,7 +2176,7 @@
     "ZAG_EOS": "zagtokenhome-zag-eos",
     "ZKS_EOS": "zkstokensr4u-zks-eos"
   },
-  "OKEx_Spot": {
+  "OKEx": {
     "AAC_BTC": "aac_btc",
     "AAC_ETH": "aac_eth",
     "AAC_USDT": "aac_usdt",

@@ -6,12 +6,12 @@ const SUPPORTED_EXCHANGES = [
   'Binance',
   'Bitfinex',
   'Bitstamp',
-  'Coinbase',
+  'CoinbasePro',
   'Huobi',
   'Kraken',
   'MXC',
   'Newdex',
-  'OKEx_Spot',
+  'OKEx',
   'WhaleEx',
 ];
 
