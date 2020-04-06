@@ -3,6 +3,7 @@ import { strict as assert } from 'assert';
 const ALL_QUOTE_SYMBOLS = [
   'BNB',
   'BTC',
+  'BKRW',
   'BUSD',
   'CAD',
   'CHF',
@@ -18,7 +19,6 @@ const ALL_QUOTE_SYMBOLS = [
   'HT',
   'HUSD',
   'JPY',
-  'KRW',
   'MX',
   'NGN',
   'OKB',
