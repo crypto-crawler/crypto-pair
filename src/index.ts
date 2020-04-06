@@ -18,6 +18,7 @@ const ALL_QUOTE_SYMBOLS = [
   'HT',
   'HUSD',
   'JPY',
+  'KRW',
   'MX',
   'NGN',
   'OKB',

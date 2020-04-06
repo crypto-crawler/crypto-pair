@@ -15,9 +15,9 @@ const SUPPORTED_EXCHANGES = [
   'WhaleEx',
 ];
 
-const pairsMapping = JSON.parse(fs.readFileSync('./tests/data/pairs_mapping.json', 'utf8')) as {
+const pairsMapping: {
   [key: string]: { [key: string]: string };
-};
+} = JSON.parse(fs.readFileSync('./tests/data/pairs_mapping.json', 'utf8'));
 
 each(SUPPORTED_EXCHANGES).test('normalize() should return the same result', (exchange: string) => {
   const mapping = pairsMapping[exchange];

@@ -1,6 +1,6 @@
 {
   "name": "crypto-pair",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Normalize cryptocurrency trade pairs.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -59,7 +59,7 @@
     "husky": "^4.2.3",
     "jest": "^25.2.7",
     "jest-each": "^25.2.6",
-    "prettier": "^2.0.2",
+    "prettier": "^2.0.3",
     "ts-jest": "^25.3.1",
     "typescript": "^3.8.3"
   },
