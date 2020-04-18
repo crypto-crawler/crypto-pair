@@ -18,6 +18,7 @@ const ALL_QUOTE_SYMBOLS = [
   'GBP',
   'HT',
   'HUSD',
+  'IDRT',
   'JPY',
   'MX',
   'NGN',
