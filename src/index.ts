@@ -211,7 +211,7 @@ export function normalizePair(rawPair: string, exchange: string): string {
       if (rawPair.endsWith('USD')) {
         assert.equal(quoteSymbol, 'USD');
       } else if (rawPair.endsWith('M20') || rawPair.endsWith('U20')) {
-        quoteSymbol = 'BTC';
+        quoteSymbol = baseSymbol === 'XBT' ? 'USD' : 'XBT';
       }
       break;
     }
