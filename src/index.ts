@@ -111,6 +111,10 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
       if (symbol === 'ORS') symbol = 'ORSGROUP';
       break;
     }
+    case 'Bitmex': {
+      if (symbol === 'XBT') symbol = 'BTC';
+      break;
+    }
     case 'Huobi': {
       if (symbol === 'HOT') symbol = 'HYDRO';
       break;
