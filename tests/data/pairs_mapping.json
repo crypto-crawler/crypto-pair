@@ -1208,6 +1208,16 @@
     "ZRX_ETH": "zrxeth",
     "ZRX_USD": "zrxusd"
   },
+  "BitMEX": {
+    "ADA_USD": "ADAUSD",
+    "BCH_USD": "BCHUSD",
+    "BTC_USD": "XBTUSD",
+    "EOS_USD": "EOSUSD",
+    "ETH_USD": "ETHUSD",
+    "LTC_USD": "LTCUSD",
+    "TRX_USD": "TRXUSD",
+    "XRP_USD": "XRPUSD"
+  },
   "Bitstamp": {
     "BCH_BTC": "bchbtc",
     "BCH_EUR": "bcheur",
