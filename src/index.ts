@@ -281,13 +281,17 @@ export function normalizePair(rawPair: string, exchange: string): string {
 
       break;
     }
+    case 'OKEx': {
+      [baseSymbol, quoteSymbol] = rawPair.split('-');
+      break;
+    }
     case 'Poloniex': {
       [quoteSymbol, baseSymbol] = rawPair.split('_');
-      return `${baseSymbol}_${quoteSymbol}`;
+      break;
     }
     case 'Upbit': {
       [quoteSymbol, baseSymbol] = rawPair.split('-');
-      return `${baseSymbol}_${quoteSymbol}`;
+      break;
     }
     default: {
       // see next line
