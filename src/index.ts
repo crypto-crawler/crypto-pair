@@ -206,11 +206,12 @@ export function normalizePair(rawPair: string, exchange: string): string {
     }
     case 'BitMEX': {
       baseSymbol = rawPair.substring(0, 3);
+      quoteSymbol = rawPair.substring(3, 6);
 
-      if (rawPair.endsWith('USD')) {
-        quoteSymbol = 'USD';
-      } else if (rawPair.endsWith('M20') || rawPair.endsWith('U20')) {
-        quoteSymbol = baseSymbol === 'XBT' ? 'USD' : 'XBT';
+      if (quoteSymbol !== 'BTC' && quoteSymbol !== 'USD') {
+        if (rawPair.endsWith('M20') || rawPair.endsWith('U20')) {
+          quoteSymbol = baseSymbol === 'XBT' ? 'USD' : 'XBT';
+        }
       }
       break;
     }
