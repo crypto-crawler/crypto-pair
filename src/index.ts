@@ -208,7 +208,6 @@ export function normalizePair(rawPair: string, exchange: string): string {
       baseSymbol = rawPair.substring(0, 3);
 
       if (rawPair.endsWith('USD')) {
-        assert.equal(quoteSymbol, 'USD');
         quoteSymbol = 'USD';
       } else if (rawPair.endsWith('M20') || rawPair.endsWith('U20')) {
         quoteSymbol = baseSymbol === 'XBT' ? 'USD' : 'XBT';
