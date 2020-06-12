@@ -209,7 +209,7 @@ export function normalizePair(rawPair: string, exchange: string): string {
       quoteSymbol = rawPair.substring(3, 6);
 
       if (quoteSymbol !== 'BTC' && quoteSymbol !== 'USD') {
-        if (rawPair.endsWith('M20') || rawPair.endsWith('U20')) {
+        if (rawPair.endsWith('M20') || rawPair.endsWith('U20') || rawPair.endsWith('Z20')) {
           quoteSymbol = baseSymbol === 'XBT' ? 'USD' : 'XBT';
         }
       }
