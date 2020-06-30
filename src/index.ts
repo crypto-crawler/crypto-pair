@@ -29,6 +29,7 @@ const ALL_QUOTE_SYMBOLS = [
   'TRX',
   'TRY',
   'TUSD',
+  'UAH',
   'USD',
   'USDC',
   'USDE',
@@ -186,7 +187,7 @@ function defaultNormalizePair(rawPair: string): string | undefined {
  * @param rawPair The original pair of an exchange
  * @param exchange The exchange name
  */
-export function normalizePair(rawPair: string, exchange: string): string {
+export function normalizePair(rawPair: string, exchange: string): string | undefined {
   assert.ok(exchange, 'The exchange name must NOT be empty');
   rawPair = rawPair.toUpperCase();
 
@@ -265,7 +266,8 @@ export function normalizePair(rawPair: string, exchange: string): string {
         quoteSymbol = safeCurrencyCode(rawPair.slice(rawPair.length - 3));
       }
       if (!QUOTE_SYMBOLS.includes(quoteSymbol)) {
-        throw new Error(`Failed to parse Kraken raw pair ${rawPair}`);
+        return undefined;
+        // throw new Error(`Failed to parse Kraken raw pair ${rawPair}`);
       }
 
       break;
@@ -276,7 +278,8 @@ export function normalizePair(rawPair: string, exchange: string): string {
       } else if (rawPair.split('_').length === 2) {
         [baseSymbol, quoteSymbol] = rawPair.toUpperCase().split('_');
       } else {
-        throw new Error(`Failed to parse ${rawPair} for Newdex`);
+        return undefined;
+        // throw new Error(`Failed to parse ${rawPair} for Newdex`);
       }
 
       break;
@@ -302,10 +305,10 @@ export function normalizePair(rawPair: string, exchange: string): string {
   if (!baseSymbol || !quoteSymbol) {
     const normalizedPair = defaultNormalizePair(rawPair);
     if (normalizedPair === undefined) {
-      throw new Error(`Failed to parse ${rawPair} of exchange ${exchange}`);
-    } else {
-      [baseSymbol, quoteSymbol] = normalizedPair.split('_');
+      return undefined;
+      // throw new Error(`Failed to parse ${rawPair} of exchange ${exchange}`);
     }
+    [baseSymbol, quoteSymbol] = normalizedPair.split('_');
   }
 
   assert.ok(baseSymbol);
