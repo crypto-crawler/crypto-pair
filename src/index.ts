@@ -60,11 +60,13 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
     case 'Bitfinex': {
       // see https://api-pub.bitfinex.com/v2/conf/pub:map:currency:sym
       const mapping: { [key: string]: string } = {
+        AAA: 'TESTAAA',
         ABS: 'ABYSS',
         AIO: 'AION',
         AMP: 'AMPL',
         ATO: 'ATOM',
         BAB: 'BCH',
+        BBB: 'TESTBBB',
         CNHT: 'CNHT',
         CSX: 'CS',
         CTX: 'CTXC',
@@ -100,6 +102,7 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
         UTN: 'UTNP',
         VSY: 'VSYS',
         WBT: 'WBTC',
+        XAUT: 'XAUT',
         XCH: 'XCHF',
         YGG: 'YEED',
         YYW: 'YOYOW',
