@@ -73,6 +73,7 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
         DRN: 'DRGN',
         DSH: 'DASH',
         DTX: 'DT',
+        EDO: 'PNT',
         EUS: 'EURS',
         EUT: 'EURT',
         GSD: 'GUSD',
