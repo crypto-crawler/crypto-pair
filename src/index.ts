@@ -230,6 +230,7 @@ export function normalizePair(rawPair: string, exchange: string): string | undef
     }
     case 'Kraken': {
       const QUOTE_SYMBOLS = [
+        'AUD',
         'BTC',
         'ETH',
         'EUR',
