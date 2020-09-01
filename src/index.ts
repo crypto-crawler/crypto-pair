@@ -63,6 +63,7 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
         AAA: 'TESTAAA',
         ABS: 'ABYSS',
         AIO: 'AION',
+        ALG: 'ALGO',
         AMP: 'AMPL',
         ATO: 'ATOM',
         BAB: 'BCH',
