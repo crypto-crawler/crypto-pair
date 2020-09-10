@@ -213,13 +213,20 @@ export function normalizePair(rawPair: string, exchange: string): string | undef
       break;
     }
     case 'BitMEX': {
-      baseSymbol = rawPair.substring(0, 3);
-      quoteSymbol = rawPair.substring(3, 6);
+      // eslint-disable-next-line no-restricted-globals
+      if (!isNaN(Number(rawPair.slice(-2)))) {
+        rawPair = rawPair.slice(0, -3);
+      }
 
-      if (quoteSymbol !== 'BTC' && quoteSymbol !== 'USD') {
-        if (rawPair.endsWith('M20') || rawPair.endsWith('U20') || rawPair.endsWith('Z20')) {
-          quoteSymbol = baseSymbol === 'XBT' ? 'USD' : 'XBT';
-        }
+      if (rawPair.endsWith('USD')) {
+        baseSymbol = rawPair.substring(0, -3);
+        quoteSymbol = 'USD';
+      } else if (rawPair.endsWith('USDT')) {
+        baseSymbol = rawPair.substring(0, -4);
+        quoteSymbol = 'USDT';
+      } else {
+        baseSymbol = rawPair;
+        quoteSymbol = baseSymbol === 'XBT' ? 'USD' : 'XBT';
       }
       break;
     }
