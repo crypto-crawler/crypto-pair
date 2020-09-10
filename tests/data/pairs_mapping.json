@@ -1213,13 +1213,17 @@
   },
   "BitMEX": {
     "ADA_USD": "ADAUSD",
+    "ADA_USDT": "ADAUSDTZ20",
     "BCH_USD": "BCHUSD",
     "BTC_USD": "XBTUSD",
     "EOS_USD": "EOSUSD",
+    "EOS_USDT": "EOSUSDTZ20",
     "ETH_USD": "ETHUSD",
+    "LINK_USDT": "LINKUSDTZ20",
     "LTC_USD": "LTCUSD",
     "TRX_USD": "TRXUSD",
-    "XRP_USD": "XRPUSD"
+    "XRP_USD": "XRPUSD",
+    "XTZ_USDT": "XTZUSDTZ20"
   },
   "Bitstamp": {
     "BCH_BTC": "bchbtc",

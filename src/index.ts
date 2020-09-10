@@ -219,10 +219,10 @@ export function normalizePair(rawPair: string, exchange: string): string | undef
       }
 
       if (rawPair.endsWith('USD')) {
-        baseSymbol = rawPair.substring(0, -3);
+        baseSymbol = rawPair.slice(0, -3);
         quoteSymbol = 'USD';
       } else if (rawPair.endsWith('USDT')) {
-        baseSymbol = rawPair.substring(0, -4);
+        baseSymbol = rawPair.slice(0, -4);
         quoteSymbol = 'USDT';
       } else {
         baseSymbol = rawPair;
