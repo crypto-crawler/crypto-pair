@@ -22,6 +22,7 @@ const ALL_QUOTE_SYMBOLS = [
   'JPY',
   'MX',
   'NGN',
+  'ODIN',
   'OKB',
   'PAX',
   'PAXE',
