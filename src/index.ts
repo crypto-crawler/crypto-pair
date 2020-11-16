@@ -231,9 +231,17 @@ export function normalizePair(rawPair: string, exchange: string): string | undef
       break;
     }
     case 'Bitstamp': {
-      if (!rawPair.includes('/') && !rawPair.includes('_')) {
+      if (
+        rawPair.endsWith('EUR') ||
+        rawPair.endsWith('BTC') ||
+        rawPair.endsWith('GBP') ||
+        rawPair.endsWith('USD')
+      ) {
         baseSymbol = rawPair.substring(0, rawPair.length - 3);
         quoteSymbol = rawPair.substring(rawPair.length - 3);
+      } else if (rawPair.endsWith('USDC')) {
+        baseSymbol = rawPair.substring(0, rawPair.length - 4);
+        quoteSymbol = rawPair.substring(rawPair.length - 4);
       }
 
       break;
