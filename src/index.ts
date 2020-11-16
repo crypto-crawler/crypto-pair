@@ -232,8 +232,8 @@ export function normalizePair(rawPair: string, exchange: string): string | undef
     }
     case 'Bitstamp': {
       if (!rawPair.includes('/') && !rawPair.includes('_')) {
-        baseSymbol = rawPair.substring(0, 3);
-        quoteSymbol = rawPair.substring(3);
+        baseSymbol = rawPair.substring(0, rawPair.length - 3);
+        quoteSymbol = rawPair.substring(rawPair.length - 3);
       }
 
       break;

@@ -1,6 +1,6 @@
 {
   "name": "crypto-pair",
-  "version": "0.3.9",
+  "version": "0.4.0",
   "description": "Normalize cryptocurrency trade pairs.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
