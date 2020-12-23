@@ -175,11 +175,12 @@ function defaultNormalizePair(rawPair: string): string | undefined {
 
   for (let i = 0; i < ALL_LENGTHS.length; i += 1) {
     const length = ALL_LENGTHS[i];
-    quoteSymbol = rawPair.slice(rawPair.length - length);
-    if (ALL_QUOTE_SYMBOLS.includes(quoteSymbol)) {
-      break;
-    } else {
-      quoteSymbol = undefined;
+    if (length < rawPair.length) {
+      const symbol = rawPair.slice(rawPair.length - length);
+      if (ALL_QUOTE_SYMBOLS.includes(symbol)) {
+        quoteSymbol = symbol;
+        break;
+      }
     }
   }
   if (!quoteSymbol) return undefined;
