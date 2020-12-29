@@ -19,7 +19,7 @@ const pairsMapping: {
   [key: string]: { [key: string]: string };
 } = JSON.parse(fs.readFileSync('./tests/data/pairs_mapping.json', 'utf8'));
 
-each(SUPPORTED_EXCHANGES).test('normalize() should return the same result', (exchange: string) => {
+each(SUPPORTED_EXCHANGES).test('%p', (exchange: string) => {
   const mapping = pairsMapping[exchange];
 
   Object.keys(mapping).forEach((pair) => {

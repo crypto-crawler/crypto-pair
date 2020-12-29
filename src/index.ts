@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
 
-const ALL_QUOTE_SYMBOLS = [
+const ALL_QUOTE_SYMBOLS = new Set([
   'BNB',
   'BTC',
   'BKRW',
@@ -44,7 +44,51 @@ const ALL_QUOTE_SYMBOLS = [
   'XRP',
   'ZAR',
   'ZIG',
-];
+]);
+
+const EXCHANGE_QUOTE_MAP = {
+  Binance: new Set([
+    'AUD',
+    'BIDR',
+    'BKRW',
+    'BNB',
+    'BRL',
+    'BTC',
+    'BUSD',
+    'BVND',
+    'DAI',
+    'ETH',
+    'EUR',
+    'GBP',
+    'IDRT',
+    'NGN',
+    'PAX',
+    'RUB',
+    'TRX',
+    'TRY',
+    'TUSD',
+    'UAH',
+    'USD',
+    'USDC',
+    'USDT',
+    'XRP',
+    'ZAR',
+  ]),
+  Kraken: new Set([
+    'AUD',
+    'BTC',
+    'ETH',
+    'EUR',
+    'USD',
+    'CAD',
+    'CHF',
+    'DAI',
+    'GBP',
+    'JPY',
+    'USDC',
+    'USDT',
+  ]),
+};
 
 const ALL_LENGTHS = [5, 4, 3, 2];
 
@@ -165,7 +209,7 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
 }
 
 // undefined means parse failure
-function defaultNormalizePair(rawPair: string): string | undefined {
+function defaultNormalizePair(rawPair: string, quotes = ALL_QUOTE_SYMBOLS): string | undefined {
   rawPair = rawPair.toUpperCase();
 
   if (rawPair.includes('_')) {
@@ -191,7 +235,7 @@ function defaultNormalizePair(rawPair: string): string | undefined {
     const length = ALL_LENGTHS[i];
     if (length < rawPair.length) {
       const symbol = rawPair.slice(rawPair.length - length);
-      if (ALL_QUOTE_SYMBOLS.includes(symbol)) {
+      if (quotes.has(symbol)) {
         quoteSymbol = symbol;
         break;
       }
@@ -218,6 +262,23 @@ export function normalizePair(rawPair: string, exchange: string): string | undef
   let quoteSymbol = '';
 
   switch (exchange) {
+    case 'Binance': {
+      if (rawPair.includes('_')) {
+        const [rawPair_, date] = rawPair.split('_');
+        if (!Number.isNaN(date)) {
+          rawPair = rawPair_; // delivery
+        }
+      }
+      switch (rawPair) {
+        case 'BNBUSD':
+          return 'BNB_USD';
+        case 'DOTUSD':
+          return 'DOT_USD';
+        default:
+        // do nothing
+      }
+      return defaultNormalizePair(rawPair, EXCHANGE_QUOTE_MAP.Binance);
+    }
     case 'Bitfinex': {
       if (rawPair.includes(':')) {
         [baseSymbol, quoteSymbol] = rawPair.split(':');
@@ -263,20 +324,7 @@ export function normalizePair(rawPair: string, exchange: string): string | undef
       break;
     }
     case 'Kraken': {
-      const QUOTE_SYMBOLS = [
-        'AUD',
-        'BTC',
-        'ETH',
-        'EUR',
-        'USD',
-        'CAD',
-        'CHF',
-        'DAI',
-        'GBP',
-        'JPY',
-        'USDC',
-        'USDT',
-      ];
+      const quoteSymbols = EXCHANGE_QUOTE_MAP.Kraken;
 
       // https://github.com/ccxt/ccxt/blob/master/js/kraken.js#L322
       const safeCurrencyCode = (currencyId: string): string => {
@@ -297,14 +345,11 @@ export function normalizePair(rawPair: string, exchange: string): string | undef
       baseSymbol = safeCurrencyCode(rawPair.slice(0, rawPair.length - 4));
       quoteSymbol = safeCurrencyCode(rawPair.slice(rawPair.length - 4));
       // handle ICXETH
-      if (
-        !QUOTE_SYMBOLS.includes(quoteSymbol) ||
-        (baseSymbol.length === 2 && baseSymbol !== 'SC')
-      ) {
+      if (!quoteSymbols.has(quoteSymbol) || (baseSymbol.length === 2 && baseSymbol !== 'SC')) {
         baseSymbol = safeCurrencyCode(rawPair.slice(0, rawPair.length - 3));
         quoteSymbol = safeCurrencyCode(rawPair.slice(rawPair.length - 3));
       }
-      if (!QUOTE_SYMBOLS.includes(quoteSymbol)) {
+      if (!quoteSymbols.has(quoteSymbol)) {
         return undefined;
         // throw new Error(`Failed to parse Kraken raw pair ${rawPair}`);
       }
