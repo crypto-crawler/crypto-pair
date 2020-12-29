@@ -35,6 +35,7 @@ const ALL_QUOTE_SYMBOLS = [
   'USDC',
   'USDE',
   'USDK',
+  'USDL',
   'USDS',
   'USDT',
   'USN',
