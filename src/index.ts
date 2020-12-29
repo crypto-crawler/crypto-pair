@@ -86,7 +86,7 @@ export function normalizeSymbol(symbol: string, exchange: string): string {
         ETH2P: 'ETH2PENDING',
         EUS: 'EURS',
         EUT: 'EURT',
-        GNT: 'GLM',
+        // GNT: 'GLM',
         GSD: 'GUSD',
         IOS: 'IOST',
         IOT: 'IOTA',
